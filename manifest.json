@@ -2,7 +2,7 @@
   "name": "WC104 Bet Calculator",
   "short_name": "WC104",
   "description": "World Cup 2026 betting calculator — tier system, stake splits, exact amounts.",
-  "start_url": "/",
+  "start_url": "/wc104-calculator/",
   "display": "standalone",
   "background_color": "#0f0f1a",
   "theme_color": "#1a1a2e",
