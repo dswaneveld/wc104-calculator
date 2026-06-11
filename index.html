@@ -321,11 +321,11 @@
   }
 
   function parseUnderdogText(text) {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    const rawLines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
     const oddsRe = /([+-]\d{3,4})/g;
 
     const allOdds = [];
-    lines.forEach(l => {
+    rawLines.forEach(l => {
       const m = [...l.matchAll(oddsRe)];
       m.forEach(x => allOdds.push(x[1]));
     });
@@ -336,42 +336,63 @@
     }
     const moneylineOdds = allOdds.slice(0, 3);
 
-    // Team 1: extract from line containing "Draw" — everything before "Draw"
-    let t1name = '', t2name = '', drawLineIdx = -1;
-    lines.forEach((l, i) => {
+    const labelWords = /\b(draw|spread|higher|lower|total|goals|regular|time|pm|am|win|tie)\b/i;
+
+    // Strip leading/trailing single-letter OCR orphans (e.g. "Czechia a" -> "Czechia")
+    function cleanName(s) {
+      let words = s.split(/\s+/).filter(w => w.length > 0);
+      while (words.length > 1 && words[words.length - 1].length === 1) words.pop();
+      while (words.length > 1 && words[0].length === 1) words.shift();
+      return words.join(' ');
+    }
+
+    // Team 1: text before "Draw" on the Draw line
+    let t1name = '', drawLineIdx = -1;
+    rawLines.forEach((l, i) => {
       if (/\bDraw\b/i.test(l) && drawLineIdx < 0) {
         drawLineIdx = i;
-        let t1 = l.replace(/\bDraw\b.*/i, '').replace(/[^A-Za-z ]/g, '').trim();
+        let t1 = l.replace(/\bDraw\b.*/i, '').replace(/[^A-Za-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+        t1 = cleanName(t1);
         if (t1.length > 2) t1name = t1;
       }
     });
 
-    // Team 2: first clean line after Draw line
-    // Skip: starts with noise char, contains team abbreviations, contains odds
-    const skipRe = /^(spread|higher|lower|total|goals|regular|\d|[+-]|[a-z]\s)/i;
-    const abbrRe = /\b[A-Z]{2,3}\b/;
-    const hasOdds = /[+-]\d{3,4}/;
-    if (drawLineIdx >= 0) {
-      for (let i = drawLineIdx + 1; i < lines.length; i++) {
-        const l = lines[i];
-        if (skipRe.test(l)) continue;
-        if (abbrRe.test(l) && l.length > 10) continue;
-        if (hasOdds.test(l)) continue;
-        const candidate = l.replace(/[^A-Za-z ]/g, '').trim();
-        if (candidate.length > 2) { t2name = candidate; break; }
+    // Team 2: scan every line, strip out noise/time/odds/abbreviations/Team1,
+    // take the first remaining capitalized name fragment
+    let t2name = '';
+    const t1norm = t1name.toLowerCase().replace(/\s/g, '');
+    for (let i = 0; i < rawLines.length; i++) {
+      let l = rawLines[i];
+      l = l.replace(/^[a-zA-Z]{1,2}\s+/, '');
+      l = l.replace(/\b\d{1,2}\s*[ap]m\b/i, ' ');
+      l = l.replace(/\bDraw\b/gi, ' ');
+      l = l.replace(/[+-]?\d+\.?\d*/g, ' ');
+      l = l.replace(/\b[A-Z]{2,3}\b/g, ' ');
+      l = l.replace(labelWords, ' ');
+      l = l.replace(/[^A-Za-z ]/g, ' ').replace(/\s+/g, ' ').trim();
+      if (l.length < 3) continue;
+      let cand = l;
+      if (t1name) {
+        const re = new RegExp(t1name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+        cand = cand.replace(re, ' ').replace(/\s+/g, ' ').trim();
+      }
+      cand = cleanName(cand);
+      const candNorm = cand.toLowerCase().replace(/\s/g, '');
+      if (cand.length >= 3 && candNorm !== t1norm && !labelWords.test(cand)) {
+        t2name = cand;
+        break;
       }
     }
 
-    // Spread: find the UNDERDOG (positive) spread line e.g. "CZE +1.5"
-    // then take the highest odds value from that line + next line
+    // Spread: find the UNDERDOG (positive) spread line e.g. "CZE +1.5", take highest odds nearby
     const spreadAbbrRe = /[A-Z]{2,3}\s*(\+\d+\.?\d*)/;
     let spreadLine = '', spreadOdds = '';
-    lines.forEach((l, i) => {
+    rawLines.forEach((l, i) => {
       if (i <= drawLineIdx || spreadOdds) return;
       const m = l.match(spreadAbbrRe);
       if (m) {
         spreadLine = m[1];
-        const combined = l + ' ' + (lines[i + 1] || '');
+        const combined = l + ' ' + (rawLines[i + 1] || '');
         const foundOdds = [...combined.matchAll(/([+-]\d{3,4})/g)].map(x => x[1]);
         if (foundOdds.length) {
           spreadOdds = foundOdds.reduce((best, o) => parseInt(o) > parseInt(best) ? o : best, foundOdds[0]);
