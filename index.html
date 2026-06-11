@@ -13,423 +13,109 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0f0f1a;
-      --bg2: #1a1a2e;
-      --bg3: #16213e;
-      --card: #1e1e35;
-      --border: rgba(255,255,255,0.08);
-      --border2: rgba(255,255,255,0.15);
-      --text: #f0f0f5;
-      --text2: #9999bb;
-      --text3: #666688;
-      --green: #4ade80;
-      --green-bg: rgba(74,222,128,0.12);
-      --blue: #60a5fa;
-      --blue-bg: rgba(96,165,250,0.12);
-      --amber: #fbbf24;
-      --amber-bg: rgba(251,191,36,0.12);
-      --red: #f87171;
-      --red-bg: rgba(248,113,113,0.12);
-      --radius: 12px;
-      --radius-sm: 8px;
+      --bg: #0f0f1a; --bg2: #1a1a2e; --bg3: #16213e; --card: #1e1e35;
+      --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.15);
+      --text: #f0f0f5; --text2: #9999bb; --text3: #666688;
+      --green: #4ade80; --green-bg: rgba(74,222,128,0.12);
+      --blue: #60a5fa; --blue-bg: rgba(96,165,250,0.12);
+      --amber: #fbbf24; --amber-bg: rgba(251,191,36,0.12);
+      --red: #f87171; --red-bg: rgba(248,113,113,0.12);
+      --radius: 12px; --radius-sm: 8px;
     }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 0;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .header {
-      background: var(--bg2);
-      border-bottom: 0.5px solid var(--border);
-      padding: 16px 20px 14px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .header h1 {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .header p {
-      font-size: 12px;
-      color: var(--text3);
-      margin-top: 2px;
-    }
-
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    .header { background: var(--bg2); border-bottom: 0.5px solid var(--border); padding: 16px 20px 14px; position: sticky; top: 0; z-index: 10; }
+    .header h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+    .header p { font-size: 12px; color: var(--text3); margin-top: 2px; }
     .body { padding: 16px 16px 40px; max-width: 480px; margin: 0 auto; }
-
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text3);
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      margin: 0 0 8px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 12px;
-    }
-
-    .stake-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .stake-row label {
-      font-size: 14px;
-      color: var(--text2);
-      flex: 1;
-    }
-
-    .stake-row input {
-      width: 80px;
-      background: var(--bg3);
-      border: 0.5px solid var(--border2);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-      font-size: 16px;
-      font-weight: 500;
-      padding: 8px 12px;
-      text-align: right;
-      outline: none;
-      -webkit-appearance: none;
-    }
-
+    .section-label { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 8px; }
+    .card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 12px; }
+    .stake-row { display: flex; align-items: center; gap: 12px; }
+    .stake-row label { font-size: 14px; color: var(--text2); flex: 1; }
+    .stake-row input { width: 80px; background: var(--bg3); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-size: 16px; font-weight: 500; padding: 8px 12px; text-align: right; outline: none; -webkit-appearance: none; }
     .stake-row input:focus { border-color: var(--blue); }
-
-    .team-names {
-      display: grid;
-      grid-template-columns: 1fr 60px 1fr;
-      gap: 8px;
-      margin-bottom: 10px;
-      align-items: center;
-    }
-
-    .vs-label {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text3);
-      text-transform: uppercase;
-    }
-
-    .odds-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-    }
-
+    .team-names { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 8px; margin-bottom: 10px; align-items: center; }
+    .vs-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
+    .odds-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     .odds-input-group { display: flex; flex-direction: column; gap: 5px; }
-
-    .odds-input-group label {
-      font-size: 11px;
-      color: var(--text3);
-      text-align: center;
-    }
-
-    input[type="text"], input[type="number"] {
-      background: var(--bg3);
-      border: 0.5px solid var(--border2);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-      font-size: 16px;
-      padding: 10px 8px;
-      width: 100%;
-      text-align: center;
-      outline: none;
-      -webkit-appearance: none;
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus { border-color: var(--blue); }
-
+    .odds-input-group label { font-size: 11px; color: var(--text3); text-align: center; }
+    input[type="text"], input[type="number"] { background: var(--bg3); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); color: var(--text); font-size: 16px; padding: 10px 8px; width: 100%; text-align: center; outline: none; -webkit-appearance: none; }
+    input[type="text"]:focus, input[type="number"]:focus { border-color: var(--blue); }
     input::placeholder { color: var(--text3); }
-
-    .team-input {
-      text-align: left;
-      padding: 10px 12px;
-      font-size: 14px;
-    }
-
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 0;
-    }
-
-    .toggle-row label {
-      font-size: 14px;
-      color: var(--text2);
-      flex: 1;
-    }
-
-    .toggle {
-      position: relative;
-      width: 44px;
-      height: 26px;
-      flex-shrink: 0;
-    }
-
+    .team-input { text-align: left; padding: 10px 12px; font-size: 14px; }
+    .toggle-row { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
+    .toggle-row label { font-size: 14px; color: var(--text2); flex: 1; }
+    .toggle { position: relative; width: 44px; height: 26px; flex-shrink: 0; }
     .toggle input { opacity: 0; width: 0; height: 0; }
-
-    .slider {
-      position: absolute;
-      inset: 0;
-      background: var(--bg3);
-      border: 0.5px solid var(--border2);
-      border-radius: 13px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .slider::before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      left: 3px;
-      top: 3px;
-      background: var(--text2);
-      border-radius: 50%;
-      transition: transform 0.2s, background 0.2s;
-    }
-
+    .slider { position: absolute; inset: 0; background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 13px; cursor: pointer; transition: background 0.2s; }
+    .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: var(--text2); border-radius: 50%; transition: transform 0.2s, background 0.2s; }
     .toggle input:checked + .slider { background: var(--blue-bg); border-color: var(--blue); }
     .toggle input:checked + .slider::before { transform: translateX(18px); background: var(--blue); }
-
     .spread-section { margin-top: 12px; }
-
-    .spread-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .calc-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--blue);
-      color: #0a0a1a;
-      font-size: 16px;
-      font-weight: 600;
-      border: none;
-      border-radius: var(--radius);
-      cursor: pointer;
-      margin-top: 4px;
-      -webkit-tap-highlight-color: transparent;
-      transition: opacity 0.15s;
-    }
-
+    .spread-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .scan-btn { width: 100%; padding: 12px; background: transparent; color: var(--blue); font-size: 15px; font-weight: 500; border: 0.5px solid var(--blue); border-radius: var(--radius); cursor: pointer; margin-bottom: 8px; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s; }
+    .scan-btn:active { opacity: 0.7; }
+    .calc-btn { width: 100%; padding: 14px; background: var(--blue); color: #0a0a1a; font-size: 16px; font-weight: 600; border: none; border-radius: var(--radius); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: opacity 0.15s; }
     .calc-btn:active { opacity: 0.85; }
-
-    .result-card {
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 10px;
-    }
-
+    .ocr-status { border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; margin-bottom: 10px; line-height: 1.5; }
+    .ocr-status.loading { background: var(--blue-bg); color: var(--blue); border: 0.5px solid rgba(96,165,250,0.25); }
+    .ocr-status.success { background: var(--green-bg); color: var(--green); border: 0.5px solid rgba(74,222,128,0.25); }
+    .ocr-status.warn { background: var(--amber-bg); color: var(--amber); border: 0.5px solid rgba(251,191,36,0.25); }
+    .ocr-status.error { background: var(--red-bg); color: var(--red); border: 0.5px solid rgba(248,113,113,0.25); }
+    .result-card { border-radius: var(--radius); padding: 16px; margin-bottom: 10px; }
     .result-card.t1 { background: var(--blue-bg); border: 0.5px solid rgba(96,165,250,0.25); }
     .result-card.t2 { background: var(--green-bg); border: 0.5px solid rgba(74,222,128,0.25); }
     .result-card.t3 { background: var(--amber-bg); border: 0.5px solid rgba(251,191,36,0.25); }
-
-    .tier-badge {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
+    .tier-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
     .t1 .tier-badge { background: rgba(96,165,250,0.2); color: var(--blue); }
     .t2 .tier-badge { background: rgba(74,222,128,0.2); color: var(--green); }
     .t3 .tier-badge { background: rgba(251,191,36,0.2); color: var(--amber); }
-
-    .bet-headline {
-      font-size: 17px;
-      font-weight: 600;
-      margin-bottom: 14px;
-      line-height: 1.3;
-    }
-
-    .bet-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 7px 0;
-      border-bottom: 0.5px solid var(--border);
-    }
-
+    .bet-headline { font-size: 17px; font-weight: 600; margin-bottom: 14px; line-height: 1.3; }
+    .bet-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; border-bottom: 0.5px solid var(--border); }
     .bet-row:last-of-type { border-bottom: none; }
-
     .bet-label { font-size: 14px; color: var(--text2); }
     .bet-value { font-size: 15px; font-weight: 500; }
-
-    .payout-block {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 0.5px solid var(--border2);
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
+    .payout-block { margin-top: 12px; padding-top: 12px; border-top: 0.5px solid var(--border2); display: flex; justify-content: space-between; align-items: baseline; }
     .payout-label { font-size: 13px; color: var(--text2); }
     .payout-amount { font-size: 26px; font-weight: 700; }
     .payout-amount.win { color: var(--green); }
     .payout-amount.loss { color: var(--red); }
-
-    .pl-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-top: 6px;
-    }
-
+    .pl-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 6px; }
     .pl-label { font-size: 12px; color: var(--text3); }
     .pl-value { font-size: 14px; font-weight: 500; }
     .pl-value.pos { color: var(--green); }
     .pl-value.neg { color: var(--red); }
-
-    .warn-box {
-      background: rgba(251,191,36,0.1);
-      border: 0.5px solid rgba(251,191,36,0.3);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--amber);
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-
-    .note {
-      font-size: 12px;
-      color: var(--text3);
-      margin-top: 8px;
-      line-height: 1.5;
-      font-style: italic;
-    }
-
+    .warn-box { background: rgba(251,191,36,0.1); border: 0.5px solid rgba(251,191,36,0.3); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 13px; color: var(--amber); margin-bottom: 10px; line-height: 1.5; }
+    .note { font-size: 12px; color: var(--text3); margin-top: 8px; line-height: 1.5; font-style: italic; }
     .divider { border: none; border-top: 0.5px solid var(--border); margin: 14px 0; }
-
-    .rule-card {
-      background: var(--card);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 8px;
-    }
-
-    .rule-card h3 {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text2);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .rule-item {
-      display: flex;
-      gap: 10px;
-      padding: 5px 0;
-      border-bottom: 0.5px solid var(--border);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
+    .rule-card { background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 8px; }
+    .rule-card h3 { font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .rule-item { display: flex; gap: 10px; padding: 5px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; line-height: 1.5; }
     .rule-item:last-child { border-bottom: none; }
     .rule-dot { color: var(--text3); flex-shrink: 0; }
-
-    .tabs {
-      display: flex;
-      gap: 4px;
-      background: var(--bg2);
-      border-radius: var(--radius);
-      padding: 4px;
-      margin-bottom: 16px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      background: transparent;
-      border: none;
-      border-radius: var(--radius-sm);
-      color: var(--text3);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .tab-btn.active {
-      background: var(--card);
-      color: var(--text);
-      border: 0.5px solid var(--border2);
-    }
-
+    .tabs { display: flex; gap: 4px; background: var(--bg2); border-radius: var(--radius); padding: 4px; margin-bottom: 16px; }
+    .tab-btn { flex: 1; padding: 8px; font-size: 13px; font-weight: 500; background: transparent; border: none; border-radius: var(--radius-sm); color: var(--text3); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background 0.15s, color 0.15s; }
+    .tab-btn.active { background: var(--card); color: var(--text); border: 0.5px solid var(--border2); }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-
-    .tier-ref {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    .tier-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: var(--card);
-      border: 0.5px solid var(--border);
-      border-radius: var(--radius-sm);
-    }
-
-    .tier-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
+    .tier-ref { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .tier-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--card); border: 0.5px solid var(--border); border-radius: var(--radius-sm); }
+    .tier-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .tier-dot.t1 { background: var(--blue); }
     .tier-dot.t2 { background: var(--green); }
     .tier-dot.t3 { background: var(--amber); }
-
     .tier-info { flex: 1; }
     .tier-name { font-size: 13px; font-weight: 500; }
     .tier-range { font-size: 11px; color: var(--text3); margin-top: 1px; }
     .tier-action { font-size: 12px; color: var(--text2); text-align: right; }
+    .ocr-preview { width: 100%; max-height: 140px; object-fit: contain; border-radius: var(--radius-sm); margin-bottom: 8px; opacity: 0.7; }
   </style>
 </head>
 <body>
 
 <div class="header">
   <h1>⚽ WC104 Calculator</h1>
-  <p>World Cup 2026 · Kalshi · 104 matches</p>
+  <p>World Cup 2026 · Underdog / Kalshi · 104 matches</p>
 </div>
 
 <div class="body">
@@ -440,7 +126,6 @@
     <button class="tab-btn" onclick="switchTab('tiers')">Tiers</button>
   </div>
 
-  <!-- CALCULATOR TAB -->
   <div class="tab-content active" id="tab-calc">
 
     <p class="section-label">Stake</p>
@@ -451,7 +136,7 @@
       </div>
     </div>
 
-    <p class="section-label">Teams</p>
+    <p class="section-label">Teams &amp; odds</p>
     <div class="card">
       <div class="team-names">
         <input type="text" id="t1name" class="team-input" placeholder="Team 1" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -474,7 +159,7 @@
       </div>
     </div>
 
-    <p class="section-label">Spread (optional — Tier 3 only)</p>
+    <p class="section-label">Spread (optional — Tier 3)</p>
     <div class="card">
       <div class="toggle-row">
         <label for="spread-toggle">Include spread</label>
@@ -487,16 +172,21 @@
         <hr class="divider">
         <div class="spread-grid">
           <div class="odds-input-group">
-            <label>Line (e.g. -1.5)</label>
-            <input type="text" id="spreadline" placeholder="-1.5" inputmode="text" autocomplete="off">
+            <label>Line (e.g. +1.5)</label>
+            <input type="text" id="spreadline" placeholder="+1.5" inputmode="text" autocomplete="off">
           </div>
           <div class="odds-input-group">
             <label>Underdog odds</label>
-            <input type="text" id="spreadodds" placeholder="+145" inputmode="text" autocomplete="off">
+            <input type="text" id="spreadodds" placeholder="-667" inputmode="text" autocomplete="off">
           </div>
         </div>
       </div>
     </div>
+
+    <button class="scan-btn" onclick="document.getElementById('ocr-input').click()">Scan Underdog screenshot →</button>
+    <input type="file" id="ocr-input" accept="image/*" style="display:none;" onchange="handleScan(this)">
+    <div id="ocr-status" style="display:none;" class="ocr-status"></div>
+    <canvas id="ocr-canvas" style="display:none;"></canvas>
 
     <button class="calc-btn" onclick="calculate()">Calculate →</button>
 
@@ -505,41 +195,33 @@
 
   </div>
 
-  <!-- RULES TAB -->
   <div class="tab-content" id="tab-rules">
-
     <div class="rule-card">
       <h3>Standing rules</h3>
       <div class="rule-item"><span class="rule-dot">—</span><span>$10/match, every match, one trader. No doubling, no chasing.</span></div>
       <div class="rule-item"><span class="rule-dot">—</span><span>One side per match. Never bet both sides of the same game.</span></div>
       <div class="rule-item"><span class="rule-dot">—</span><span>Limit orders at/near midpoint only. Never market-buy into the spread.</span></div>
       <div class="rule-item"><span class="rule-dot">—</span><span>No parlays, no props, no totals. Tier 3 spreads are the only non-moneyline bet.</span></div>
-      <div class="rule-item"><span class="rule-dot">—</span><span>Knockout rounds: read contract settlement rules before ordering. "Win in 90 min" ≠ "advance."</span></div>
+      <div class="rule-item"><span class="rule-dot">—</span><span>Knockout rounds: read contract settlement rules before ordering. "Win in 90 min" is not "advance."</span></div>
       <div class="rule-item"><span class="rule-dot">—</span><span>Stop-loss: down $150 → group meeting before next bet. Nobody tops up mid-tournament.</span></div>
       <div class="rule-item"><span class="rule-dot">—</span><span>Withdraw winnings periodically. Don't warehouse cash on the platform.</span></div>
     </div>
-
     <div class="rule-card">
       <h3>Tier 1 sanity check</h3>
-      <div class="rule-item"><span class="rule-dot">—</span><span>If the "underdog" is USA, Mexico, or Brazil, compare Kalshi price to Polymarket first.</span></div>
-      <div class="rule-item"><span class="rule-dot">—</span><span>If Kalshi's price is richer (home-crowd bias), flip to favorite + draw instead.</span></div>
+      <div class="rule-item"><span class="rule-dot">—</span><span>If the "underdog" is USA, Mexico, or Brazil, compare Underdog price to Kalshi/Polymarket first.</span></div>
+      <div class="rule-item"><span class="rule-dot">—</span><span>If price is richer (home-crowd bias), flip to favorite + draw instead.</span></div>
     </div>
-
     <div class="rule-card">
       <h3>Two-leg stake split</h3>
       <div class="rule-item"><span class="rule-dot">—</span><span>Each leg gets $10 × (its price ÷ sum of both prices). Equal contract count on both legs. Payout is identical regardless of which leg hits.</span></div>
     </div>
-
     <div class="rule-card">
       <h3>Expected cost</h3>
       <div class="rule-item"><span class="rule-dot">—</span><span>~$30–70 over 39 days. That's the entertainment fee — anything better is gravy.</span></div>
     </div>
-
   </div>
 
-  <!-- TIERS TAB -->
   <div class="tab-content" id="tab-tiers">
-
     <div class="tier-ref">
       <div class="tier-row">
         <div class="tier-dot t1"></div>
@@ -566,30 +248,25 @@
         <div class="tier-action">Underdog spread (40–60¢) or Underdog + Draw</div>
       </div>
     </div>
-
     <hr class="divider">
-
     <div class="rule-card">
       <h3>Tier 3 spread rule</h3>
       <div class="rule-item"><span class="rule-dot">—</span><span>Use the underdog spread line that prices 40–60¢ (roughly -150 to +150).</span></div>
-      <div class="rule-item"><span class="rule-dot">—</span><span>If bid-ask gap > 3¢ on the spread, revert to underdog + draw on the main market.</span></div>
+      <div class="rule-item"><span class="rule-dot">—</span><span>If bid-ask gap is more than 3¢ on the spread, revert to underdog + draw on the main market.</span></div>
       <div class="rule-item"><span class="rule-dot">—</span><span>Confirm regulation-time settlement before placing.</span></div>
     </div>
-
     <div class="rule-card">
       <h3>Price picks the tier</h3>
-      <div class="rule-item"><span class="rule-dot">—</span><span>Use Kalshi's price at order time. No vibes, no injury debates, no overrides.</span></div>
+      <div class="rule-item"><span class="rule-dot">—</span><span>Use the price at order time. No vibes, no injury debates, no overrides.</span></div>
     </div>
-
   </div>
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js');
-    });
+    window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js'); });
   }
 
   function switchTab(name) {
@@ -615,6 +292,139 @@
 
   document.getElementById('t1name').addEventListener('input', updateLabels);
   document.getElementById('t2name').addEventListener('input', updateLabels);
+
+  function setStatus(msg, type) {
+    const el = document.getElementById('ocr-status');
+    el.style.display = 'block';
+    el.className = 'ocr-status ' + type;
+    el.textContent = msg;
+  }
+
+  async function handleScan(input) {
+    const file = input.files[0];
+    if (!file) return;
+    input.value = '';
+
+    setStatus('Reading screenshot... this takes 5–10 seconds', 'loading');
+
+    try {
+      const result = await Tesseract.recognize(file, 'eng', {
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-. ',
+      });
+
+      const text = result.data.text;
+      parseUnderdogText(text);
+
+    } catch(e) {
+      setStatus('OCR failed — enter odds manually. Error: ' + e.message, 'error');
+    }
+  }
+
+  function parseUnderdogText(text) {
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+    // Extract all American odds: +NNN or -NNN (100-999)
+    const oddsRe = /([+-]\d{3,4})/g;
+    const allOdds = [];
+    const oddsLineMap = [];
+
+    lines.forEach((line, i) => {
+      const matches = [...line.matchAll(oddsRe)];
+      matches.forEach(m => {
+        allOdds.push(parseInt(m[1]));
+        oddsLineMap.push({ odds: parseInt(m[1]), line: line, lineIdx: i });
+      });
+    });
+
+    if (allOdds.length < 3) {
+      setStatus('Found fewer than 3 odds values. Try a cleaner screenshot, or enter manually.', 'warn');
+      return;
+    }
+
+    // Find team names: look for lines containing "Draw" keyword — that anchors position
+    let drawLineIdx = -1;
+    lines.forEach((l, i) => {
+      if (/draw/i.test(l)) drawLineIdx = i;
+    });
+
+    // Find the three moneyline odds: they appear in the first odds group
+    // In Underdog layout: Team1 odds, Draw odds, Team2 odds are the first three odds values
+    // Then spread odds appear below
+    // Strategy: take first 3 distinct odds as the moneyline trio
+    const moneylineOdds = allOdds.slice(0, 3);
+
+    // Extract team names from lines near the top
+    // Look for lines that are NOT "Draw", NOT pure numbers/odds, NOT short labels
+    const skipWords = /^(draw|spread|higher|lower|total|goals|regular|time|kor|cze|ksa|usa|mex|arg|bra|ger|fra|eng|por|esp|ned|ita|jpn|aus|mor|sen|eci|pan|bol|par|chi|uru|col|per|ecu|crc|jam|tri|sco|wal|pol|cro|bih|srb|rom|bul|alb|nor|swe|den|fin|aut|sui|svk|svn|hun|cze|ukr|geo|aze|kaz|uzb|tun|mar|egy|nga|gha|cmr|civ|sen|mli|gin|cod|zim|zam|ang|bfa|ben|tog|gab|cgo|ken|uga|tan|ethi|rsa|bot|lso|swz|mwi|moz|mdg|com|sey|mri|cap|stp|gnb|slr|gam|sle|lbr|gnq|dji|som|eri|ssd|caf|tcf)\b/i;
+
+    // Get team names: scan for capitalized multi-word names
+    const teamNameRe = /^[A-Z][a-zA-Z ]{3,}/;
+    const candidateNames = [];
+    lines.forEach((l, i) => {
+      if (teamNameRe.test(l) && !/draw/i.test(l) && !/spread/i.test(l) && !/higher/i.test(l) && !/lower/i.test(l) && !/total/i.test(l) && !/regular/i.test(l) && l.length > 3 && !/^[+-]?\d/.test(l)) {
+        // Also skip lines that are just odds
+        if (!oddsRe.test(l) || l.replace(oddsRe, '').trim().length > 2) {
+          candidateNames.push({ name: l.replace(oddsRe, '').trim(), lineIdx: i });
+        }
+      }
+    });
+
+    let t1name = '', t2name = '';
+    if (candidateNames.length >= 2) {
+      t1name = candidateNames[0].name;
+      t2name = candidateNames[candidateNames.length > 2 ? candidateNames.length - 1 : 1].name;
+    }
+
+    // Find spread odds: look for a line matching "XXX +N.N" or "CZE +1.5" pattern
+    const spreadLineRe = /([A-Z]{2,3})\s*([+-]\d+\.?\d*)/;
+    let spreadLine = '', spreadOdds = '';
+    lines.forEach((l, i) => {
+      const m = l.match(spreadLineRe);
+      if (m && i > 2) {
+        // Check next line for the odds
+        const nextLine = lines[i+1] || '';
+        const oddsMatch = nextLine.match(/([+-]\d{3,4})/);
+        if (oddsMatch && !spreadOdds) {
+          spreadLine = m[2];
+          spreadOdds = oddsMatch[1];
+        }
+        // Or odds on same line
+        const sameLineOdds = l.match(/([+-]\d{3,4})/);
+        if (sameLineOdds && !spreadOdds) {
+          spreadLine = m[2];
+          spreadOdds = sameLineOdds[1];
+        }
+      }
+    });
+
+    // Fill in the fields
+    const fields = [
+      { id: 't1odds', val: moneylineOdds[0] >= 0 ? '+'+moneylineOdds[0] : String(moneylineOdds[0]) },
+      { id: 'drawodds', val: moneylineOdds[1] >= 0 ? '+'+moneylineOdds[1] : String(moneylineOdds[1]) },
+      { id: 't2odds', val: moneylineOdds[2] >= 0 ? '+'+moneylineOdds[2] : String(moneylineOdds[2]) },
+    ];
+
+    fields.forEach(f => { document.getElementById(f.id).value = f.val; });
+
+    if (t1name) { document.getElementById('t1name').value = t1name; updateLabels(); }
+    if (t2name) { document.getElementById('t2name').value = t2name; updateLabels(); }
+
+    if (spreadOdds) {
+      document.getElementById('spreadline').value = spreadLine || '';
+      document.getElementById('spreadodds').value = spreadOdds;
+      document.getElementById('spread-toggle').checked = true;
+      document.getElementById('spread-section').style.display = 'block';
+    }
+
+    const filled = fields.filter(f => f.val).length;
+    const spreadNote = spreadOdds ? ' Spread also detected — verify the line.' : '';
+    setStatus(
+      filled === 3
+        ? 'Odds filled in — verify before calculating.' + spreadNote
+        : 'Partial read (' + filled + '/3 odds). Check and correct fields.',
+      filled === 3 ? 'success' : 'warn'
+    );
+  }
 
   function parseOdds(raw) {
     const s = String(raw).trim().replace(/\s/g, '');
@@ -661,14 +471,9 @@
 
     const favML = parseFloat(String(favOdds).trim());
     let tier, tierClass;
-
-    if (favML >= -120) {
-      tier = 1; tierClass = 't1';
-    } else if (favML >= -300) {
-      tier = 2; tierClass = 't2';
-    } else {
-      tier = 3; tierClass = 't3';
-    }
+    if (favML >= -120) { tier = 1; tierClass = 't1'; }
+    else if (favML >= -300) { tier = 2; tierClass = 't2'; }
+    else { tier = 3; tierClass = 't3'; }
 
     const tierLabels = { 1: 'Tier 1 — close game', 2: 'Tier 2 — clear favorite', 3: 'Tier 3 — mismatch' };
     let html = '';
@@ -680,22 +485,7 @@
       const contracts = +(dogStake / dogProb).toFixed(1);
       const payout = +(contracts).toFixed(2);
       const pl = +(payout - stake).toFixed(2);
-
-      html = `
-        <div class="result-card t1">
-          <span class="tier-badge">${tierLabels[1]}</span>
-          <div class="bet-headline">${dogName} + Draw</div>
-          <div class="bet-row"><span class="bet-label">${dogName} <span style="color:var(--text3)">${fmtOdds(dogOdds)}</span></span><span class="bet-value">$${dogStake.toFixed(2)}</span></div>
-          <div class="bet-row"><span class="bet-label">Draw <span style="color:var(--text3)">${fmtOdds(drawraw)}</span></span><span class="bet-value">$${drawStake.toFixed(2)}</span></div>
-          <div class="payout-block">
-            <div>
-              <div class="payout-label">Payout if either hits</div>
-              <div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div>
-            </div>
-            <span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span>
-          </div>
-        </div>
-        <p class="note">If ${dogName} is USA, Mexico, or Brazil — check Polymarket. If Kalshi's price is richer, use Tier 2 formula instead.</p>`;
+      html = `<div class="result-card t1"><span class="tier-badge">${tierLabels[1]}</span><div class="bet-headline">${dogName} + Draw</div><div class="bet-row"><span class="bet-label">${dogName} <span style="color:var(--text3)">${fmtOdds(dogOdds)}</span></span><span class="bet-value">$${dogStake.toFixed(2)}</span></div><div class="bet-row"><span class="bet-label">Draw <span style="color:var(--text3)">${fmtOdds(drawraw)}</span></span><span class="bet-value">$${drawStake.toFixed(2)}</span></div><div class="payout-block"><div><div class="payout-label">Payout if either hits</div><div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div></div><span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span></div></div><p class="note">If ${dogName} is USA, Mexico, or Brazil — compare to Kalshi/Polymarket. If price is richer there, use Tier 2 formula instead.</p>`;
     }
 
     if (tier === 2) {
@@ -705,21 +495,7 @@
       const contracts = +(favStake / favProb).toFixed(1);
       const payout = +(contracts).toFixed(2);
       const pl = +(payout - stake).toFixed(2);
-
-      html = `
-        <div class="result-card t2">
-          <span class="tier-badge">${tierLabels[2]}</span>
-          <div class="bet-headline">${favName} + Draw</div>
-          <div class="bet-row"><span class="bet-label">${favName} <span style="color:var(--text3)">${fmtOdds(favOdds)}</span></span><span class="bet-value">$${favStake.toFixed(2)}</span></div>
-          <div class="bet-row"><span class="bet-label">Draw <span style="color:var(--text3)">${fmtOdds(drawraw)}</span></span><span class="bet-value">$${drawStake.toFixed(2)}</span></div>
-          <div class="payout-block">
-            <div>
-              <div class="payout-label">Payout if either hits</div>
-              <div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div>
-            </div>
-            <span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span>
-          </div>
-        </div>`;
+      html = `<div class="result-card t2"><span class="tier-badge">${tierLabels[2]}</span><div class="bet-headline">${favName} + Draw</div><div class="bet-row"><span class="bet-label">${favName} <span style="color:var(--text3)">${fmtOdds(favOdds)}</span></span><span class="bet-value">$${favStake.toFixed(2)}</span></div><div class="bet-row"><span class="bet-label">Draw <span style="color:var(--text3)">${fmtOdds(drawraw)}</span></span><span class="bet-value">$${drawStake.toFixed(2)}</span></div><div class="payout-block"><div><div class="payout-label">Payout if either hits</div><div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div></div><span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span></div></div>`;
     }
 
     if (tier === 3) {
@@ -731,21 +507,7 @@
         const contracts = +(stake / pSpread).toFixed(1);
         const payout = +(contracts).toFixed(2);
         const pl = +(payout - stake).toFixed(2);
-
-        html = `
-          <div class="result-card t3">
-            <span class="tier-badge">${tierLabels[3]}</span>
-            <div class="bet-headline">${dogName} ${spreadline} spread</div>
-            <div class="bet-row"><span class="bet-label">Spread <span style="color:var(--text3)">${fmtOdds(spreadraw)}</span></span><span class="bet-value">$${stake.toFixed(2)}</span></div>
-            <div class="payout-block">
-              <div>
-                <div class="payout-label">Payout if hits</div>
-                <div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div>
-              </div>
-              <span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span>
-            </div>
-          </div>
-          <p class="note">Spread in 40–60¢ band ✓ — confirm regulation-time settlement before placing.</p>`;
+        html = `<div class="result-card t3"><span class="tier-badge">${tierLabels[3]}</span><div class="bet-headline">${dogName} ${spreadline} spread</div><div class="bet-row"><span class="bet-label">Spread <span style="color:var(--text3)">${fmtOdds(spreadraw)}</span></span><span class="bet-value">$${stake.toFixed(2)}</span></div><div class="payout-block"><div><div class="payout-label">Payout if hits</div><div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div></div><span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span></div></div><p class="note">Spread in 40–60¢ band — confirm regulation-time settlement before placing.</p>`;
       } else {
         const combined = pd + dogProb;
         const dogStake = +(stake * dogProb / combined).toFixed(2);
@@ -753,25 +515,8 @@
         const contracts = +(dogStake / dogProb).toFixed(1);
         const payout = +(contracts).toFixed(2);
         const pl = +(payout - stake).toFixed(2);
-
-        const warn = spreadOutOfBand
-          ? `<div class="warn-box">Spread odds outside 40–60¢ band — reverting to underdog + draw.</div>`
-          : '';
-
-        html = `${warn}
-          <div class="result-card t3">
-            <span class="tier-badge">${tierLabels[3]} — lottery ticket</span>
-            <div class="bet-headline">${dogName} + Draw</div>
-            <div class="bet-row"><span class="bet-label">${dogName} <span style="color:var(--text3)">${fmtOdds(dogOdds)}</span></span><span class="bet-value">$${dogStake.toFixed(2)}</span></div>
-            <div class="bet-row"><span class="bet-label">Draw <span style="color:var(--text3)">${fmtOdds(drawraw)}</span></span><span class="bet-value">$${drawStake.toFixed(2)}</span></div>
-            <div class="payout-block">
-              <div>
-                <div class="payout-label">Payout if either hits</div>
-                <div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div>
-              </div>
-              <span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span>
-            </div>
-          </div>`;
+        const warn = spreadOutOfBand ? '<div class="warn-box">Spread outside 40–60¢ band — using underdog + draw instead.</div>' : '';
+        html = `${warn}<div class="result-card t3"><span class="tier-badge">${tierLabels[3]} — lottery ticket</span><div class="bet-headline">${dogName} + Draw</div><div class="bet-row"><span class="bet-label">${dogName} <span style="color:var(--text3)">${fmtOdds(dogOdds)}</span></span><span class="bet-value">$${dogStake.toFixed(2)}</span></div><div class="bet-row"><span class="bet-label">Draw <span style="color:var(--text3)">${fmtOdds(drawraw)}</span></span><span class="bet-value">$${drawStake.toFixed(2)}</span></div><div class="payout-block"><div><div class="payout-label">Payout if either hits</div><div class="pl-row"><span class="pl-label">Profit/loss</span><span class="pl-value ${pl >= 0 ? 'pos' : 'neg'}">${pl >= 0 ? '+' : ''}$${pl.toFixed(2)}</span></div></div><span class="payout-amount ${payout > stake ? 'win' : 'loss'}">$${payout.toFixed(2)}</span></div></div>`;
       }
     }
 
@@ -779,6 +524,5 @@
     document.getElementById('output').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 </script>
-
 </body>
 </html>
