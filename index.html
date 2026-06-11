@@ -322,109 +322,73 @@
 
   function parseUnderdogText(text) {
     const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
-    // Extract all American odds: +NNN or -NNN (100-999)
     const oddsRe = /([+-]\d{3,4})/g;
-    const allOdds = [];
-    const oddsLineMap = [];
 
-    lines.forEach((line, i) => {
-      const matches = [...line.matchAll(oddsRe)];
-      matches.forEach(m => {
-        allOdds.push(parseInt(m[1]));
-        oddsLineMap.push({ odds: parseInt(m[1]), line: line, lineIdx: i });
-      });
+    const allOdds = [];
+    lines.forEach(l => {
+      const m = [...l.matchAll(oddsRe)];
+      m.forEach(x => allOdds.push(x[1]));
     });
 
     if (allOdds.length < 3) {
-      setStatus('Found fewer than 3 odds values. Try a cleaner screenshot, or enter manually.', 'warn');
+      setStatus('Found fewer than 3 odds. Try a cleaner screenshot or enter manually.', 'warn');
       return;
     }
-
-    // Find team names: look for lines containing "Draw" keyword — that anchors position
-    let drawLineIdx = -1;
-    lines.forEach((l, i) => {
-      if (/draw/i.test(l)) drawLineIdx = i;
-    });
-
-    // Find the three moneyline odds: they appear in the first odds group
-    // In Underdog layout: Team1 odds, Draw odds, Team2 odds are the first three odds values
-    // Then spread odds appear below
-    // Strategy: take first 3 distinct odds as the moneyline trio
     const moneylineOdds = allOdds.slice(0, 3);
 
-    // Extract team names from lines near the top
-    // Look for lines that are NOT "Draw", NOT pure numbers/odds, NOT short labels
-    const skipWords = /^(draw|spread|higher|lower|total|goals|regular|time|kor|cze|ksa|usa|mex|arg|bra|ger|fra|eng|por|esp|ned|ita|jpn|aus|mor|sen|eci|pan|bol|par|chi|uru|col|per|ecu|crc|jam|tri|sco|wal|pol|cro|bih|srb|rom|bul|alb|nor|swe|den|fin|aut|sui|svk|svn|hun|cze|ukr|geo|aze|kaz|uzb|tun|mar|egy|nga|gha|cmr|civ|sen|mli|gin|cod|zim|zam|ang|bfa|ben|tog|gab|cgo|ken|uga|tan|ethi|rsa|bot|lso|swz|mwi|moz|mdg|com|sey|mri|cap|stp|gnb|slr|gam|sle|lbr|gnq|dji|som|eri|ssd|caf|tcf)\b/i;
-
-    // Get team names: scan for capitalized multi-word names
-    const teamNameRe = /^[A-Z][a-zA-Z ]{3,}/;
-    const candidateNames = [];
+    let t1name = '', t2name = '', drawLineIdx = -1;
     lines.forEach((l, i) => {
-      if (teamNameRe.test(l) && !/draw/i.test(l) && !/spread/i.test(l) && !/higher/i.test(l) && !/lower/i.test(l) && !/total/i.test(l) && !/regular/i.test(l) && l.length > 3 && !/^[+-]?\d/.test(l)) {
-        // Also skip lines that are just odds
-        if (!oddsRe.test(l) || l.replace(oddsRe, '').trim().length > 2) {
-          candidateNames.push({ name: l.replace(oddsRe, '').trim(), lineIdx: i });
-        }
+      if (/\bDraw\b/i.test(l) && drawLineIdx < 0) {
+        drawLineIdx = i;
+        let t1 = l.replace(/\bDraw\b.*/i, '').replace(/[^A-Za-z ]/g, '').trim();
+        if (t1.length > 2) t1name = t1;
       }
     });
 
-    let t1name = '', t2name = '';
-    if (candidateNames.length >= 2) {
-      t1name = candidateNames[0].name;
-      t2name = candidateNames[candidateNames.length > 2 ? candidateNames.length - 1 : 1].name;
+    const skipRe = /^(spread|higher|lower|total|goals|regular|\d|[+-])/i;
+    if (drawLineIdx >= 0) {
+      for (let i = drawLineIdx + 1; i < lines.length; i++) {
+        if (skipRe.test(lines[i])) continue;
+        const candidate = lines[i].replace(/[^A-Za-z ]/g, '').trim();
+        if (candidate.length > 2) { t2name = candidate; break; }
+      }
     }
 
-    // Find spread odds: look for a line matching "XXX +N.N" or "CZE +1.5" pattern
-    const spreadLineRe = /([A-Z]{2,3})\s*([+-]\d+\.?\d*)/;
+    const spreadAbbrRe = /[A-Z]{2,3}\s*([+-]\d+\.?\d*)/;
     let spreadLine = '', spreadOdds = '';
     lines.forEach((l, i) => {
-      const m = l.match(spreadLineRe);
-      if (m && i > 2) {
-        // Check next line for the odds
-        const nextLine = lines[i+1] || '';
-        const oddsMatch = nextLine.match(/([+-]\d{3,4})/);
-        if (oddsMatch && !spreadOdds) {
-          spreadLine = m[2];
-          spreadOdds = oddsMatch[1];
-        }
-        // Or odds on same line
-        const sameLineOdds = l.match(/([+-]\d{3,4})/);
-        if (sameLineOdds && !spreadOdds) {
-          spreadLine = m[2];
-          spreadOdds = sameLineOdds[1];
+      if (i <= 2 || spreadOdds) return;
+      const m = l.match(spreadAbbrRe);
+      if (m) {
+        spreadLine = m[1];
+        const combined = l + ' ' + (lines[i + 1] || '');
+        const foundOdds = [...combined.matchAll(/([+-]\d{3,4})/g)].map(x => x[1]);
+        if (foundOdds.length) {
+          spreadOdds = foundOdds.reduce((best, o) => parseInt(o) > parseInt(best) ? o : best, foundOdds[0]);
         }
       }
     });
 
-    // Fill in the fields
-    const fields = [
-      { id: 't1odds', val: moneylineOdds[0] >= 0 ? '+'+moneylineOdds[0] : String(moneylineOdds[0]) },
-      { id: 'drawodds', val: moneylineOdds[1] >= 0 ? '+'+moneylineOdds[1] : String(moneylineOdds[1]) },
-      { id: 't2odds', val: moneylineOdds[2] >= 0 ? '+'+moneylineOdds[2] : String(moneylineOdds[2]) },
-    ];
-
-    fields.forEach(f => { document.getElementById(f.id).value = f.val; });
+    const fmt = n => parseInt(n) >= 0 ? '+' + parseInt(n) : String(parseInt(n));
+    document.getElementById('t1odds').value = fmt(moneylineOdds[0]);
+    document.getElementById('drawodds').value = fmt(moneylineOdds[1]);
+    document.getElementById('t2odds').value = fmt(moneylineOdds[2]);
 
     if (t1name) { document.getElementById('t1name').value = t1name; updateLabels(); }
     if (t2name) { document.getElementById('t2name').value = t2name; updateLabels(); }
 
     if (spreadOdds) {
-      document.getElementById('spreadline').value = spreadLine || '';
+      document.getElementById('spreadline').value = spreadLine;
       document.getElementById('spreadodds').value = spreadOdds;
       document.getElementById('spread-toggle').checked = true;
       document.getElementById('spread-section').style.display = 'block';
     }
 
-    const filled = fields.filter(f => f.val).length;
-    const spreadNote = spreadOdds ? ' Spread also detected — verify the line.' : '';
-    setStatus(
-      filled === 3
-        ? 'Odds filled in — verify before calculating.' + spreadNote
-        : 'Partial read (' + filled + '/3 odds). Check and correct fields.',
-      filled === 3 ? 'success' : 'warn'
-    );
+    const nameNote = (t1name && t2name) ? ' Team names filled.' : ' Names not detected — enter manually.';
+    const spreadNote = spreadOdds ? ' Spread detected — verify.' : '';
+    setStatus('Odds filled — verify all fields before calculating.' + nameNote + spreadNote, 'success');
   }
+
 
   function parseOdds(raw) {
     const s = String(raw).trim().replace(/\s/g, '');
